@@ -41,3 +41,32 @@ func TestDmgTaken(t *testing.T) {
 		}
 	}
 }
+
+// test case for dmgTaken function
+func TestDmgDone(t *testing.T) {
+
+	// input-result data items
+	dataItems := []TestDataItem{
+		{[]string{"pichu", "gyarados"}, 4, false},
+		{[]string{"gyarados", "pichu"}, 0.5, false},
+		{[]string{"geodude", "pichu"}, 2, false},
+	}
+
+	for _, item := range dataItems {
+		pokeArr := parser.GetPokemon(item.inputs)
+		dmgRelations := []parser.Drelations{}
+
+		result := dmgDone(dmgRelations, pokeArr[1]) // get result of `dmgDone` function
+
+		if item.hasError {
+			// expected an error
+		} else {
+			// expected a value
+			if result != item.result {
+				t.Errorf("dmgTaken() with args %v : FAILED, expected %v but got value '%v'", item.inputs, item.result, result)
+			} else {
+				t.Logf("dmgTaken() with args %v : PASSED, expected %v and got value '%v'", item.inputs, item.result, result)
+			}
+		}
+	}
+}
