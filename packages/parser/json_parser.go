@@ -20,7 +20,7 @@ type PokeType struct {
 	PokeType Node `json:"type"`
 }
 
-// Move stores an Elem containing a move's data
+// Move stores a Node containing a move's data
 type Move struct {
 	Move Node `json:"move"`
 }
@@ -105,11 +105,11 @@ func GetLanguage(res interface{}) string {
 
 // TranslatedMove saves the base name of a move in english and its translations using the struct lan
 type TranslatedMove struct {
-	Name  string `json:"name"`
-	Names []lan  `json:"names"`
+	Name   string `json:"name"`
+	Tnames []lan  `json:"names"`
 }
 
-// language stores in Name the name of something in a given language, and Language stores the name, and
+// lan stores in Name the name of something in a given language, and Language stores the name, and
 // the corresponding node of the Language beign used
 type lan struct {
 	Name     string `json:"name"`
@@ -126,7 +126,7 @@ func GetMove(url string, lan string) Node {
 	move := &TranslatedMove{}
 	json.NewDecoder(response.Body).Decode(move)
 
-	for _, l := range move.Names {
+	for _, l := range move.Tnames {
 		if l.Language.Name == lan {
 			return Node{l.Name, url}
 		}

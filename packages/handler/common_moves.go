@@ -17,7 +17,7 @@ import (
 //	- MovesInCommon:	A list of all the moves they have in common
 type commonMoves struct {
 	Language      string        `json:"language"`
-	Pokemons      []string      `json:"pokemon"`
+	Pokemons      []string      `json:"pokemons"`
 	MovesInCommon []parser.Node `json:"moves_in_common"`
 }
 
