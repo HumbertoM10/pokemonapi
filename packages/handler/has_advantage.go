@@ -65,10 +65,10 @@ func Advantage(w http.ResponseWriter, r *http.Request) {
 			adv.HasAdvantage = true
 			adv.Explanation = adv.Poke1 + " has an advantage over " + adv.Poke2
 		} else if adv.DmgDone-adv.DmgTaken < 0 {
-			adv.Explanation = adv.Poke1 + " does't have an advantage over " + adv.Poke2 +
+			adv.Explanation = adv.Poke1 + " doesn't have an advantage over " + adv.Poke2 +
 				" in fact " + adv.Poke2 + " has an advantage over " + adv.Poke1
 		} else {
-			adv.Explanation = adv.Poke1 + " does't have an advantage over " + adv.Poke2 +
+			adv.Explanation = adv.Poke1 + " doesn't have an advantage over " + adv.Poke2 +
 				" nor " + adv.Poke2 + " has an advantage over " + adv.Poke1
 		}
 	}
