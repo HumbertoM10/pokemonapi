@@ -1,4 +1,4 @@
-//This package helps to parse all the requests beign made to the poke api and also
+//This package helps to parse all the requests beign made to the poke api
 package parser
 
 import (
@@ -11,12 +11,12 @@ import (
 // Pokemon stores a pokemon's name, types, and moves
 type Pokemon struct {
 	Name  string     `json:"name"`
-	Types []pokeType `json:"types"`
+	Types []PokeType `json:"types"`
 	Moves []Move     `json:"moves"`
 }
 
 // poketype stores a the pokemontype name and its url
-type pokeType struct {
+type PokeType struct {
 	PokeType Node `json:"type"`
 }
 
@@ -55,11 +55,11 @@ func GetPokemon(pokeNames []string) []Pokemon {
 // Drelations stores a type, and the damage relations of said type
 type Drelations struct {
 	Name      string    `json:"name"`
-	Drelation drelation `json:"damage_relations"`
+	Drelation Drelation `json:"damage_relations"`
 }
 
 // drelation is a structure that stores all the damages made from, and two the type in question
-type drelation struct {
+type Drelation struct {
 	DoubleDmgFrom []Node `json:"double_damage_from"`
 	DoubleDmgTo   []Node `json:"double_damage_to"`
 	HalfDmgFrom   []Node `json:"half_damage_from"`
@@ -68,8 +68,7 @@ type drelation struct {
 	NoDmgTo       []Node `json:"no_damage_to"`
 }
 
-// GetDamageRelations gets da damage relations from the passed url and returns it in a Drelations
-// struct
+// GetDamageRelations gets the damage relations from the passed url and returns it in a Drelations struct
 func GetDamageRelations(url string) Drelations {
 	response, err := http.Get(url)
 	if err != nil {
