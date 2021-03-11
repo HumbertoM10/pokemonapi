@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: api-deployment
+  labels:
+    app: pokeapi
+spec:
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: pokeapi
+  template: 
+    metadata:
+      labels:
+        app: pokeapi
+    spec: 
+      containers: 
+        - name: pokeapi
+          image: docker.io/humbertoe10/pokeapi
