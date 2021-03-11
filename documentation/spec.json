@@ -1,0 +1,192 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "PokeRestApi",
+      "license": {
+        "name": "MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/api"
+      }
+    ],
+    "paths": {
+      "/advantage": {
+        "get": {
+          "summary": "Advantage of one pokemon over other",
+          "parameters": [
+            {
+              "name": "pokemon",
+              "in": "query",
+              "description": "2 Pokemons to compare separated by comma",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Reponse in the form of json",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/advantage"
+                  }
+                }
+              }
+            },
+            "default": {
+              "description": "unexpected error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/advantage"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/commonMoves": {
+        "get": {
+          "summary": "Moves that the given pokemon have in common",
+          "parameters": [
+            {
+              "name": "pokemon",
+              "in": "query",
+              "description": "Pokemons separated by comma",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "language",
+              "in": "query",
+              "description": "Code of language to translate",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Moves in common to return",
+              "required": false,
+              "schema": {
+                "type": "int"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Reponse in the form of json",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/common"
+                  }
+                }
+              }
+            },
+            "default": {
+              "description": "unexpected error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/common"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "advantage": {
+          "type": "object",
+          "required": [
+            "has_advantage",
+            "damage_taken",
+            "damage_done",
+            "pokemon_1",
+            "pokemon_2",
+            "explanation"
+          ],
+          "properties": {
+            "has_advantage": {
+              "type": "boolean"
+            },
+            "damage_taken": {
+              "type": "float",
+              "format": "float32"
+            },
+            "damage_done": {
+              "type": "float",
+              "format": "float32"
+            },
+            "pokemon_1": {
+              "type": "string"
+            },
+            "pokemon_2": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        },
+        "common": {
+          "type": "array",
+          "default": "object",
+          "required": [
+            "language",
+            "pokemons",
+            "moves_in_common"
+          ],
+          "properties": {
+            "language": {
+              "type": "string"
+            },
+            "pokemons": {
+              "type": "array",
+              "default": [],
+              "items": {
+                "$ref": "#components/schemas/pokemon"
+              }
+            },
+            "moves_in_common": {
+              "type": "array",
+              "default": [],
+              "$ref": "#/components/schemas/move"
+            }
+          }
+        },
+        "pokemon": {
+          "type": "string"
+        },
+        "move": {
+          "type": "object",
+          "required": [
+            "name",
+            "url"
+          ],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }

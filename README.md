@@ -1,4 +1,4 @@
-# pokemonapi
+# Pokemonapi
 *This is a retake on the pokeapi*
 
 ## Running the project
@@ -50,6 +50,12 @@ https://github.com/marketplace/actions/kubectl-aws-eks
 - [parser](https://github.com/HumbertoM10/pokemonapi/blob/master/documentation/parser.md)
 
 ## RESTApi Documentation
+Using The OpenAPI Specification ver 3.1.0
+
+- [YAML](https://github.com/HumbertoM10/pokemonapi/blob/master/documentation/spec.yaml)
+- [JSON](https://github.com/HumbertoM10/pokemonapi/blob/master/documentation/spec.json)
+
+
 **Advantage**(endpoint)
 Advantage is an endpoint that stores the data of 2 given pokemons telling which one has an advantage over the other with the following data:
 	- HasAdvantage:	Does the first pokemon has an advantage over the second one? (true or false)
