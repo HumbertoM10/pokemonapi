@@ -57,16 +57,22 @@ Using The OpenAPI Specification ver 3.1.0
 
 
 **Advantage**(endpoint)
+
 Advantage is an endpoint that stores the data of 2 given pokemons telling which one has an advantage over the other with the following data:
-	- HasAdvantage:	Does the first pokemon has an advantage over the second one? (true or false)
-	- DmgTaken:		Multiplier of damage recived by the first pokemon from the second pokemon
-	- DmgDone:		Multiplier of damage done by the first pokemon to the second pokemon
-	- Poke1:		Name of the first pokemon
-	- Poke2:		Name of the second pokemon
-	- Explanation:	Explanation on why the first pokemon has an advantage or not over the second pokemon
+Name |Type | Description
+--- | --- | ---
+*HasAdvantage* | bool | `Does the first pokemon has an advantage over the second one? (true or false)`
+*DmgTaken* | float32 | `Multiplier of damage recived by the first pokemon from the second`
+*DmgDone* | float32 | `Multiplier of damage done by the first pokemon to the second pokemon`
+*Poke1* | string | `Name of the first pokemon`
+*Poke2* | string | `Name of the second pokemon`
+*Explanation* | string | `Explanation on why the first pokemon has an advantage or not over the second pokemon`
 
 **CommonMoves**(endpoint)
+
 commonMoves is an endpoint that stores the data of all given pokemons telling which moves are the ones they have in common:
-	- Language:			Code of the language in which the data is going to be stored
-	- Pokemons:			Data of the pokemon which moves were compared
-	- MovesInCommon:	A list of all the moves they have in common
+Name |Type | Description
+--- | --- | ---
+*Language* | string | `Code of the language in which the data is going to be stored`
+*Pokemons* | []string | `Data of the pokemon which moves were compared`
+*MovesInCommon* | []parser.Node | `A list of all the moves they have in common`
