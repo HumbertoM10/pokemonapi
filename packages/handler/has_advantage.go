@@ -18,11 +18,11 @@ import (
 //	- Poke2:		Name of the second pokemon
 //	- Explanation:	Explanation on why the first pokemon has an advantage or not over the second pokemon
 type advantage struct {
-	HasAdvantage bool    `json:"hasAdvantage"`
-	DmgTaken     float32 `json:"dmgTaken"`
-	DmgDone      float32 `json:"dmgDone"`
-	Poke1        string  `json:"poke1"`
-	Poke2        string  `json:"poke2"`
+	HasAdvantage bool    `json:"has_advantage"`
+	DmgTaken     float32 `json:"damage_taken"`
+	DmgDone      float32 `json:"damage_done"`
+	Poke1        string  `json:"pokemon_1"`
+	Poke2        string  `json:"pokemon_2"`
 	Explanation  string  `json:"explanation"`
 }
 
@@ -39,7 +39,8 @@ type advantage struct {
 //	- If it is negative this means that the second pokemon has an advantage over the first one
 //	- If it is zero this means that neither of the pokemons have an advantage over the other
 // This reasoning of why it has the advantage or not its given to the user via the
-// Explanation variable
+// Explanation variable.
+// All of this is returned as a JSON with the help of the parser package
 func Advantage(w http.ResponseWriter, r *http.Request) {
 	const pokeKey = "pokemon"
 
@@ -53,8 +54,8 @@ func Advantage(w http.ResponseWriter, r *http.Request) {
 		adv.Poke2 = pokeArr[1].Name
 		dmgRelations := []parser.Drelations{}
 
-		for _, t := range pokeArr[0].Ptypes {
-			relation := parser.GetDamageRelations(t.Ptype.URL)
+		for _, t := range pokeArr[0].Types {
+			relation := parser.GetDamageRelations(t.PokeType.URL)
 			dmgRelations = append(dmgRelations, relation)
 		}
 
@@ -71,6 +72,8 @@ func Advantage(w http.ResponseWriter, r *http.Request) {
 			adv.Explanation = adv.Poke1 + " doesn't have an advantage over " + adv.Poke2 +
 				" nor " + adv.Poke2 + " has an advantage over " + adv.Poke1
 		}
+	} else {
+		adv.Explanation = "An error has ocurred, please make sure you entered two valid pokemons"
 	}
 
 	parser.SendJSON(w, http.StatusOK, adv)
@@ -87,14 +90,14 @@ func dmgDone(attack []parser.Drelations, defense parser.Pokemon) float32 {
 	var damage float32 = 1.0
 
 	for _, pt1 := range attack {
-		for _, pt2 := range defense.Ptypes {
-			if typeInDamage(pt2.Ptype.Name, pt1.Drelation.DoubleDmgTo) {
+		for _, pt2 := range defense.Types {
+			if typeInDamage(pt2.PokeType.Name, pt1.Drelation.DoubleDmgTo) {
 				damage *= 2
 				continue
-			} else if typeInDamage(pt2.Ptype.Name, pt1.Drelation.HalfDmgTo) {
+			} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.HalfDmgTo) {
 				damage /= 2
 				continue
-			} else if typeInDamage(pt2.Ptype.Name, pt1.Drelation.NoDmgTo) {
+			} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.NoDmgTo) {
 				return 0.0
 			}
 		}
@@ -114,15 +117,15 @@ func dmgTaken(attack parser.Pokemon, defense []parser.Drelations) float32 {
 	var damage float32 = 1.0
 
 	for _, pt1 := range defense {
-		for _, pt2 := range attack.Ptypes {
+		for _, pt2 := range attack.Types {
 			if damage > 0 {
-				if typeInDamage(pt2.Ptype.Name, pt1.Drelation.DoubleDmgFrom) {
+				if typeInDamage(pt2.PokeType.Name, pt1.Drelation.DoubleDmgFrom) {
 					damage *= 2
 					continue
-				} else if typeInDamage(pt2.Ptype.Name, pt1.Drelation.HalfDmgFrom) {
+				} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.HalfDmgFrom) {
 					damage *= 0.5
 					continue
-				} else if typeInDamage(pt2.Ptype.Name, pt1.Drelation.NoDmgFrom) {
+				} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.NoDmgFrom) {
 					damage *= 0
 				}
 			}
@@ -133,7 +136,7 @@ func dmgTaken(attack parser.Pokemon, defense []parser.Drelations) float32 {
 }
 
 // typeInDamage returns true if a string given to a is found on the given list
-func typeInDamage(a string, list []parser.Elem) bool {
+func typeInDamage(a string, list []parser.Node) bool {
 	for _, b := range list {
 		if b.Name == a {
 			return true
