@@ -35,3 +35,18 @@ jobs:
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+  aws-deploy:
+    needs: docker-build
+    name: Deploy new release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy new docker image
+        uses: tuongaz/kubctl-eks-action
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA_BASE_64_ENCODED }}
+          DOCKER_TAG: ${{ github.sha }}
+        with:
+          args: set image deployment/api-deployment pokeapi=docker.io/humbertoe10/pokeapi:$DOCKER_TAG
