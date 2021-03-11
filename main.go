@@ -17,6 +17,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/advantage", handler.Advantage).Methods("GET")
+	router.HandleFunc("/api/commonMoves", handler.Advantage).Methods("GET")
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%d", port),
