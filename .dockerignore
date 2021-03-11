@@ -4,3 +4,4 @@
 .gitignore
 /documentation
 /k8s
+Dockerfile
