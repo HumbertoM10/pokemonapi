@@ -52,7 +52,7 @@ func Advantage(w http.ResponseWriter, r *http.Request) {
 	if len(pokeArr) >= 2 {
 		adv.Poke1 = pokeArr[0].Name
 		adv.Poke2 = pokeArr[1].Name
-		dmgRelations := []parser.Drelations{}
+		dmgRelations := []parser.DmgRelations{}
 
 		for _, t := range pokeArr[0].Types {
 			relation := parser.GetDamageRelations(t.PokeType.URL)
@@ -86,18 +86,18 @@ func Advantage(w http.ResponseWriter, r *http.Request) {
 // In order to calculate the damage done the function uses a damage variable that is multiplied by two or divided by two
 // depending on the damage relation of the attacking pokemon whit the defending pokemon. (The damage returned is 0 if a
 // relation of no damage to is encountered).
-func dmgDone(attack []parser.Drelations, defense parser.Pokemon) float32 {
+func dmgDone(attack []parser.DmgRelations, defense parser.Pokemon) float32 {
 	var damage float32 = 1.0
 
 	for _, pt1 := range attack {
 		for _, pt2 := range defense.Types {
-			if typeInDamage(pt2.PokeType.Name, pt1.Drelation.DoubleDmgTo) {
+			if typeInDamage(pt2.PokeType.Name, pt1.TypeRelation.DoubleDmgTo) {
 				damage *= 2
 				continue
-			} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.HalfDmgTo) {
+			} else if typeInDamage(pt2.PokeType.Name, pt1.TypeRelation.HalfDmgTo) {
 				damage /= 2
 				continue
-			} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.NoDmgTo) {
+			} else if typeInDamage(pt2.PokeType.Name, pt1.TypeRelation.NoDmgTo) {
 				return 0.0
 			}
 		}
@@ -113,19 +113,19 @@ func dmgDone(attack []parser.Drelations, defense parser.Pokemon) float32 {
 // In order to calculate the damage done the function uses a damage variable that is multiplied by two or divided by two
 // depending on the damage relation of the defending pokemon whit the attacking pokemon. (The damage returned is 0 if a
 // relation of no damage to is encountered).
-func dmgTaken(attack parser.Pokemon, defense []parser.Drelations) float32 {
+func dmgTaken(attack parser.Pokemon, defense []parser.DmgRelations) float32 {
 	var damage float32 = 1.0
 
 	for _, pt1 := range defense {
 		for _, pt2 := range attack.Types {
 			if damage > 0 {
-				if typeInDamage(pt2.PokeType.Name, pt1.Drelation.DoubleDmgFrom) {
+				if typeInDamage(pt2.PokeType.Name, pt1.TypeRelation.DoubleDmgFrom) {
 					damage *= 2
 					continue
-				} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.HalfDmgFrom) {
+				} else if typeInDamage(pt2.PokeType.Name, pt1.TypeRelation.HalfDmgFrom) {
 					damage *= 0.5
 					continue
-				} else if typeInDamage(pt2.PokeType.Name, pt1.Drelation.NoDmgFrom) {
+				} else if typeInDamage(pt2.PokeType.Name, pt1.TypeRelation.NoDmgFrom) {
 					damage *= 0
 				}
 			}

@@ -9,7 +9,7 @@ import (
 // input-result struct type
 type TestDataItem struct {
 	pokemon      parser.Pokemon // Inputs to `dmgTaken` function
-	dmgRelations []parser.Drelations
+	dmgRelations []parser.DmgRelations
 	result       float32 // Result of `dmgTaken` function
 	hasError     bool    // Does `dmgTaken` function returns error
 }
@@ -30,10 +30,10 @@ func TestDmgTaken(t *testing.T) {
 					},
 				},
 			},
-			dmgRelations: []parser.Drelations{
+			dmgRelations: []parser.DmgRelations{
 				{
 					Name: "electric",
-					Drelation: parser.Drelation{
+					TypeRelation: parser.TypeRelation{
 						HalfDmgFrom: []parser.Node{
 							{
 								Name: "flying",
@@ -81,10 +81,10 @@ func TestDmgDone(t *testing.T) {
 					},
 				},
 			},
-			dmgRelations: []parser.Drelations{
+			dmgRelations: []parser.DmgRelations{
 				{
 					Name: "electric",
-					Drelation: parser.Drelation{
+					TypeRelation: parser.TypeRelation{
 						DoubleDmgTo: []parser.Node{
 							{
 								Name: "water",

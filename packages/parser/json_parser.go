@@ -44,22 +44,23 @@ func GetPokemon(pokeNames []string) []Pokemon {
 		if err != nil {
 			log.Fatal(err)
 		}
-		poke := &Pokemon{}
-		json.NewDecoder(response.Body).Decode(poke)
-		pokeArr = append(pokeArr, *poke)
+		pokemon := &Pokemon{}
+		json.NewDecoder(response.Body).Decode(pokemon)
+		pokeArr = append(pokeArr, *pokemon)
 	}
 
 	return pokeArr
 }
 
-// Drelations stores a type, and the damage relations of said type
-type Drelations struct {
-	Name      string    `json:"name"`
-	Drelation Drelation `json:"damage_relations"`
+// DmgRelations stores a type, and the damage relations of said type
+type DmgRelations struct {
+	Name         string       `json:"name"`
+	TypeRelation TypeRelation `json:"damage_relations"`
 }
 
-// drelation is a structure that stores all the damages made from, and two the type in question
-type Drelation struct {
+// TypeRelation is a structure that stores all the types of damage relations that a pokemon has
+// (has the same form of the JSON recieved from the pokeapi)
+type TypeRelation struct {
 	DoubleDmgFrom []Node `json:"double_damage_from"`
 	DoubleDmgTo   []Node `json:"double_damage_to"`
 	HalfDmgFrom   []Node `json:"half_damage_from"`
@@ -68,13 +69,15 @@ type Drelation struct {
 	NoDmgTo       []Node `json:"no_damage_to"`
 }
 
-// GetDamageRelations gets the damage relations from the passed url and returns it in a Drelations struct
-func GetDamageRelations(url string) Drelations {
+// GetDamageRelations gets the damage relations from the passed url that has the form of:
+// https://pokeapi.co/api/v2/type/{name}/ (where name is the name of the pokemon type) and
+// returns it in a DmgRelations struct
+func GetDamageRelations(url string) DmgRelations {
 	response, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
-	relation := &Drelations{}
+	relation := &DmgRelations{}
 	json.NewDecoder(response.Body).Decode(relation)
 
 	return *relation
