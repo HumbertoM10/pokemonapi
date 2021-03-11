@@ -18,18 +18,22 @@
 > This reasoning of why it has the advantage or not its given to the user via the Explanation 
 > variable. All of this is returned as a JSON with the help of the parser package
 
-`func CommonMoves(w http.ResponseWriter, r *http.Request)`
+```go
+func CommonMoves(w http.ResponseWriter, r *http.Request)
+```
 > CommonMoves is a function that given a set of pokemons of two or more, a
 > languague and a limit to the maximum common moves returned. It returns a
 > JSON with the language, the pokemons that it compared and the moves it found
 > that they have in common (this moves limited by the maximum allowed by the
 > user, with default value of 1)
 
-`func dmgDone(attack []parser.Drelations, defense parser.Pokemon) float32`
+```go
+func dmgDone(attack []parser.Drelations, defense parser.Pokemon) float32
+```
 > dmgDone is a function which recieves:
->   -An array of the damage relations that the attacking pokemon has, in this case the attacking pokemon is the first pokemon
->   -The defending pokemon, in this case the defending pokemon is the second one
-
+> - An array of the damage relations that the attacking pokemon has, in this case the attacking pokemon is the first pokemon
+> - The defending pokemon, in this case the defending pokemon is the second one
+>
 > The function then proceeds to check the damage relations that the attacking
 > pokemon has with the defending pokemon types. In order to calculate the
 > damage done the function uses a damage variable that is multiplied by two or
@@ -37,12 +41,14 @@
 > whit the defending pokemon. (The damage returned is 0 if a relation of no
 > damage to is encountered).
 
-`func dmgTaken(attack parser.Pokemon, defense []parser.Drelations) float32`
+```go
+func dmgTaken(attack parser.Pokemon, defense []parser.Drelations) float32
+```
 > dmgTaken is a function which recieves:
-
->     -The attacking pokemon, in this case the attacking pokemon is the first one
->     -An array of the damage relations that the defending pokemon has, in this case the defending pokemon is the second pokemon
-
+>
+> - The attacking pokemon, in this case the attacking pokemon is the first one
+> - An array of the damage relations that the defending pokemon has, in this case the defending pokemon is the second pokemon
+>
 > The function then proceeds to check the damage relations that the defending
 > pokemon has with the attacking pokemon types. In order to calculate the
 > damage done the function uses a damage variable that is multiplied by two or
@@ -50,27 +56,32 @@
 > whit the attacking pokemon. (The damage returned is 0 if a relation of no
 > damage to is encountered).
 
-`func hasMoves(m string, moves []parser.Move) bool`
+```go
+func hasMoves(m string, moves []parser.Move) bool
+```
 > hasMove returns true if a move is a move is on given list Inputs:
 >   -m:     Move to be compared to agaisnt the list of moves
 >   -moves: List of moves in which we are looking for the desired move
 > Returns:
 >  -true or false depending on if the move was on the list or not
 
-`func swap(i1 int, i2 int, p *[]parser.Pokemon)`
-> swap is a function that swaps two given elements of a list.
-
-`func translateMove(lan string, move parser.Node) parser.Node`
+```go
+func translateMove(lan string, move parser.Node) parser.Node
+```
 > translate translates a move to the desired language Inputs:
 >   -lan:   Code of the language to translate to
 >   -move:  Move that is going to be translated
 > Returns:
 >   -move: Translated move
 
-`func typeInDamage(a string, list []parser.Node) bool`
+```go
+func typeInDamage(a string, list []parser.Node) bool
+```
 > typeInDamage returns true if a string given to a is found on the given list
 
-`func getCommonMoves(commonM commonMoves, lan string) commonMoves`
+```go
+func getCommonMoves(commonM commonMoves, lan string) commonMoves
+```
 > getCommonMoves will return the moves that the given pokemons have in common
 > via the commonMoves struct
 
@@ -85,12 +96,15 @@
             Explanation  string  `json:"explanation"`
     }
 > advantage is a struct that stores the data of 2 given pokemons telling which one has an advantage over the other with the following data:
->    - HasAdvantage: Does the first pokemon has an advantage over the second one? (true or false)
->    - DmgTaken:             Multiplier of damage recived by the first pokemon from the second pokemon
->    - DmgDone:              Multiplier of damage done by the first pokemon to the second pokemon
->    - Poke1:                Name of the first pokemon
->    - Poke2:                Name of the second pokemon
->    - Explanation:  Explanation on why the first pokemon has an advantage or not over the second pokemon
+
+Name | Description
+--- | --- 
+*HasAdvantage* | `Does the first pokemon has an advantage over the second one? (true or false)`
+*DmgTaken* | `Multiplier of damage recived by the first pokemon from the second`
+*DmgDone* | `Multiplier of damage done by the first pokemon to the second pokemon`
+*Poke1* | `Name of the first pokemon`
+*Poke2* | `Name of the second pokemon`
+*Explanation* | `Explanation on why the first pokemon has an advantage or not over the second pokemon`
 
     type commonMoves struct {
             Language      string        `json:"language"`
@@ -99,6 +113,9 @@
     }
 > commonMoves is a struct that stores the data of all given pokemons telling
 > which moves are the ones they have in common:
->        - Language:                     Code of the language in which the data is going to be stored
->        - Pokemons:                     Data of the pokemon which moves were compared
->        - MovesInCommon:        A list of all the moves they have in common
+
+Name | Description
+--- | --- 
+*Language* | `Code of the language in which the data is going to be stored`
+*Pokemons* | `Data of the pokemon which moves were compared`
+*MovesInCommon* | `A list of all the moves they have in common`
