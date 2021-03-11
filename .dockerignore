@@ -1,0 +1,6 @@
+#Ignore this in the docker image
+*.md
+/.github
+.gitignore
+/documentation
+/k8s
