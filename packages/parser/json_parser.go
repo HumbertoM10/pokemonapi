@@ -8,25 +8,26 @@ import (
 	"net/http"
 )
 
-// Pokemon stores a pokemon's name, type, and moveset
+// Pokemon stores a pokemon's name, types, and moves
 type Pokemon struct {
-	Name   string  `json:"name"`
-	Ptypes []ptype `json:"types"`
-	Moves  []Move  `json:"moves"`
+	Name  string     `json:"name"`
+	Types []pokeType `json:"types"`
+	Moves []Move     `json:"moves"`
 }
 
-// ptype stores a types name as well as its url
-type ptype struct {
-	Ptype Elem `json:"type"`
+// poketype stores a the pokemontype name and its url
+type pokeType struct {
+	PokeType Node `json:"type"`
 }
 
 // Move stores an Elem containing a move's data
 type Move struct {
-	Move Elem `json:"move"`
+	Move Node `json:"move"`
 }
 
-// Elem stores a name as well as a url
-type Elem struct {
+// Node stores a name and a url, is used to store the parts
+// of the information provided by the consummed api
+type Node struct {
 	Name string `json:"name"`
 	URL  string `json:"url"`
 }
@@ -59,12 +60,12 @@ type Drelations struct {
 
 // drelation is a structure that stores all the damages made from, and two the type in question
 type drelation struct {
-	DoubleDmgFrom []Elem `json:"double_damage_from"`
-	DoubleDmgTo   []Elem `json:"double_damage_to"`
-	HalfDmgFrom   []Elem `json:"half_damage_from"`
-	HalfDmgTo     []Elem `json:"half_damage_to"`
-	NoDmgFrom     []Elem `json:"no_damage_from"`
-	NoDmgTo       []Elem `json:"no_damage_to"`
+	DoubleDmgFrom []Node `json:"double_damage_from"`
+	DoubleDmgTo   []Node `json:"double_damage_to"`
+	HalfDmgFrom   []Node `json:"half_damage_from"`
+	HalfDmgTo     []Node `json:"half_damage_to"`
+	NoDmgFrom     []Node `json:"no_damage_from"`
+	NoDmgTo       []Node `json:"no_damage_to"`
 }
 
 // GetDamageRelations gets da damage relations from the passed url and returns it in a Drelations
@@ -89,7 +90,7 @@ func GetLanguage(res interface{}) string {
 		log.Fatal(err)
 	}
 
-	lan := &Elem{}
+	lan := &Node{}
 	json.NewDecoder(response.Body).Decode(lan)
 
 	if lan.Name == "" {
@@ -100,33 +101,33 @@ func GetLanguage(res interface{}) string {
 
 }
 
-// CompleteMove saves the name, and all the names in different locales of a move
-type CompleteMove struct {
-	Name  string     `json:"name"`
-	Names []language `json:"names"`
+// TranslatedMove saves the base name of a move in english and its translations using the struct lan
+type TranslatedMove struct {
+	Name  string `json:"name"`
+	Names []lan  `json:"names"`
 }
 
-// language stores in Name the name of a move in a given language, and Language stores the name, and
-// url of the language being used
-type language struct {
+// language stores in Name the name of something in a given language, and Language stores the name, and
+// the corresponding node of the Language beign used
+type lan struct {
 	Name     string `json:"name"`
-	Language Elem   `json:"language"`
+	Language Node   `json:"language"`
 }
 
 // GetMove gets a move with the provided url and translates it to the language given in lan
-func GetMove(url string, lan string) Elem {
+func GetMove(url string, lan string) Node {
 	response, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	move := &CompleteMove{}
+	move := &TranslatedMove{}
 	json.NewDecoder(response.Body).Decode(move)
 
 	for _, l := range move.Names {
 		if l.Language.Name == lan {
-			return Elem{l.Name, url}
+			return Node{l.Name, url}
 		}
 	}
-	return Elem{}
+	return Node{}
 }
