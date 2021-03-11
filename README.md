@@ -46,8 +46,8 @@ Deploy: I used the following GitHub Action from kubectl-aws-eks
 https://github.com/marketplace/actions/kubectl-aws-eks
 
 ## Documentation
-- [handler](https://github.com/HumbertoM10/pokemonapi/documents/handler.md)
-- [parser](https://github.com/HumbertoM10/pokemonapi/documents/parser.md)
+- [handler](https://github.com/HumbertoM10/pokemonapi/documentation/handler.md)
+- [parser](https://github.com/HumbertoM10/pokemonapi/documentation/parser.md)
 
 ## RESTApi Documentation
 **Advantage**(endpoint)
